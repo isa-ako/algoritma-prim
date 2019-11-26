@@ -43,7 +43,7 @@ void output_prim_result(vector<Edge> prim_result){
 int main()
 {
     /// Deklarasi awal
-    vector<Edge> T;
+    vector<Edge> Graph;
     vector<Edge> prim_result;
     vector<string> vertex_selected;
     int jumlah_vertex;
@@ -77,14 +77,14 @@ int main()
             }
             co++;
         }
-        if(first==0) T.push_back(ins);
+        if(first==0) Graph.push_back(ins);
         else first--;
     }
     /** end: untuk membaca file .txt, gak usah dipikir */
 
     cout << "List Edge :" << endl;
-    for(int i=0; i<T.size(); i++){
-        cout << T[i].v1 << " " <<  T[i].v2 << " " << T[i].bobot << endl;
+    for(int i=0; i<Graph.size(); i++){
+        cout << Graph[i].v1 << " " <<  Graph[i].v2 << " " << Graph[i].bobot << endl;
     }
 
     cout << " - - - " << endl;
@@ -114,22 +114,21 @@ int main()
         Edge insert_edge;
 
         /// Loop untuk mencari edge
-        for(int i=0; i<T.size(); i++){
+        for(int i=0; i<Graph.size(); i++){
             int selected = 0;
             int selected_idx = -1;
 
             /// Loop untuk mengecek vector yg sudah masuk dalam spanning tree
             for(int j=0; j<vertex_selected.size(); j++){
-                if( is_vertex_give_no_cycle(T[i], vertex_selected[j]) ){
+                if( is_vertex_give_no_cycle(Graph[i], vertex_selected[j]) ){
                     selected++;
                     selected_idx = j;
                 }
             }
-
             /// Jika vector memenuhi kriteria, pilih bobot yg lebih kecil
-            if( selected==1 && T[i].bobot<bobot ){
-                bobot = T[i].bobot;
-                insert_edge = T[i];
+            if( selected==1 && Graph[i].bobot<bobot ){
+                bobot = Graph[i].bobot;
+                insert_edge = Graph[i];
                 check_vertex_idx = selected_idx;
                 decide_to_insert = 1;
             }
@@ -140,7 +139,6 @@ int main()
             prim_result.push_back( insert_edge );
             output_prim_result( prim_result );
         }
-
     }
 
     /** End Algoritma Prim */
