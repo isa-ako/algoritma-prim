@@ -18,6 +18,19 @@ bool compareBobot(Edge a, Edge b){
     return a.bobot < b.bobot;
 }
 
+bool is_vector_have_no_cycle(Edge ed, string vect){
+    return
+    ( ed.v1 == vect && ed.v2 != vect ) ||
+    ( ed.v2 == vect && ed.v1 != vect );
+}
+
+bool push_to_vector_selected(Edge ed, vector<string> &vector_selected, int selected_idx){
+    if( vector_selected[selected_idx] != ed.v1 )
+        vector_selected.push_back( ed.v1 );
+    else
+        vector_selected.push_back( ed.v2 );
+}
+
 int main()
 {
     /// Deklarasi awal
@@ -82,29 +95,17 @@ int main()
             int selected = 0;
             int selected_idx = -1;
 
-            /// Dua Loop untuk mengecek vector yg sudah masuk dalam spanning tree
+            /// Loop untuk mengecek vector yg sudah masuk dalam spanning tree
             for(int j=0; j<vector_selected.size(); j++){
-                if( T[i].v1 == vector_selected[j] ){
+                if( is_vector_have_no_cycle(T[i], vector_selected[j]) ){
                     selected++;
                     selected_idx = j;
-                    break;
-                }
-            }
-            for(int j=0; j<vector_selected.size(); j++){
-                if( T[i].v2 == vector_selected[j] ){
-                    selected++;
-                    selected_idx = j;
-                    break;
                 }
             }
 
             /// Jika vector memenuhi kriteria
             if( selected==1 ){
-                if( vector_selected[selected_idx] != T[i].v1 )
-                    vector_selected.push_back( T[i].v1 );
-                else
-                    vector_selected.push_back( T[i].v2 );
-
+                push_to_vector_selected( T[i], vector_selected, selected_idx );
                 prim_result.push_back(T[i]);
                 break;
                 /** langsung break loop karena sebelumnya T sudah diurutkan,
