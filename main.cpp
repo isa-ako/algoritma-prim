@@ -18,7 +18,7 @@ bool compareBobot(Edge a, Edge b){
     return a.bobot < b.bobot;
 }
 
-bool is_vector_give_no_cycle(Edge ed, string vect){
+bool is_vertex_give_no_cycle(Edge ed, string vect){
     return
     ( ed.v1 == vect && ed.v2 != vect ) ||
     ( ed.v2 == vect && ed.v1 != vect );
@@ -89,10 +89,21 @@ int main()
 
     cout << " - - - " << endl;
 
+    string firstVertex;
+    int input_not_allowed = 1;
+
+    while( input_not_allowed ){
+        cout << "Masukkan vertex yang ditentukan : ";
+        cin >> firstVertex;
+        for(int i=0; i<list_vertex.size(); i++){
+            if( firstVertex == list_vertex[i] )
+                input_not_allowed = 0;
+        }
+    }
+
     /** Start Algoritma Prim */
 
     /// Insert Vertex yg ditentukan
-    string firstVertex = "C";
     vertex_selected.push_back( firstVertex );
 
     /// Loop sebanyak jumlah_vertex - 1
@@ -109,7 +120,7 @@ int main()
 
             /// Loop untuk mengecek vector yg sudah masuk dalam spanning tree
             for(int j=0; j<vertex_selected.size(); j++){
-                if( is_vector_give_no_cycle(T[i], vertex_selected[j]) ){
+                if( is_vertex_give_no_cycle(T[i], vertex_selected[j]) ){
                     selected++;
                     selected_idx = j;
                 }
@@ -134,7 +145,7 @@ int main()
 
     /** End Algoritma Prim */
 
-    cout << "Vektor yg dilewati : ";
+    cout << "Vertex yg dilewati : ";
     for(int i=0; i<vertex_selected.size(); i++){
         cout << vertex_selected[i] << ",";
     }
