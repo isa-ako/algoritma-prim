@@ -18,7 +18,7 @@ bool compareBobot(Edge a, Edge b){
     return a.bobot < b.bobot;
 }
 
-bool is_vector_have_no_cycle(Edge ed, string vect){
+bool is_vector_give_no_cycle(Edge ed, string vect){
     return
     ( ed.v1 == vect && ed.v2 != vect ) ||
     ( ed.v2 == vect && ed.v1 != vect );
@@ -29,6 +29,15 @@ bool push_to_vector_selected(Edge ed, vector<string> &vector_selected, int selec
         vector_selected.push_back( ed.v1 );
     else
         vector_selected.push_back( ed.v2 );
+}
+
+void output_prim_result(vector<Edge> prim_result){
+    int jumlah = 0;
+    for(int i=0; i<prim_result.size(); i++){
+        cout << "[" << prim_result[i].v1 << "," <<  prim_result[i].v2 << "]=" << prim_result[i].bobot << ", ";
+        jumlah += prim_result[i].bobot;
+    }
+    cout << endl << "| total=" << jumlah << endl << endl;
 }
 
 int main()
@@ -71,6 +80,7 @@ int main()
 
     /// Ascending Sort
     sort(T.begin(), T.end(), compareBobot);
+    cout << "Sorted Edge :" << endl;
     for(int i=0; i<T.size(); i++){
         cout << T[i].v1 << " " <<  T[i].v2 << " " << T[i].bobot << endl;
     }
@@ -83,12 +93,10 @@ int main()
     prim_result.push_back( T[0] );
     vector_selected.push_back( T[0].v1 );
     vector_selected.push_back( T[0].v2 );
+    output_prim_result(prim_result);
 
     /// Loop sebanyak jumlah_vektor - 2
     for(int o=0; o<jumlah_vektor-2; o++){
-        int selected_vector_edge = -1;
-        int decide_to_insert = 0;
-        Edge selected_edge;
 
         /// Loop untuk mencari edge
         for(int i=0; i<T.size(); i++){
@@ -97,7 +105,7 @@ int main()
 
             /// Loop untuk mengecek vector yg sudah masuk dalam spanning tree
             for(int j=0; j<vector_selected.size(); j++){
-                if( is_vector_have_no_cycle(T[i], vector_selected[j]) ){
+                if( is_vector_give_no_cycle(T[i], vector_selected[j]) ){
                     selected++;
                     selected_idx = j;
                 }
@@ -107,6 +115,8 @@ int main()
             if( selected==1 ){
                 push_to_vector_selected( T[i], vector_selected, selected_idx );
                 prim_result.push_back(T[i]);
+
+                output_prim_result(prim_result);
                 break;
                 /** langsung break loop karena sebelumnya T sudah diurutkan,
                   * jadi yg paling pertama ditemukan pasti yg terkecil
@@ -117,13 +127,6 @@ int main()
     }
 
     /** End Algoritma Prim */
-
-    int jumlah_min_bobot = 0;
-    for(int i=0; i<prim_result.size(); i++){
-        cout << prim_result[i].v1 << " " <<  prim_result[i].v2 << " " << prim_result[i].bobot << endl;
-        jumlah_min_bobot += prim_result[i].bobot;
-    }
-    cout << "Minimal Bobot Spanning Tree : " << jumlah_min_bobot << endl;
 
     cout << "Vektor yg dilewati : ";
     for(int i=0; i<vector_selected.size(); i++){
