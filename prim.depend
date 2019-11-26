@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1574736887 source:z:\strategi algoritma\prim\main.cpp
+	<iostream>
+	<fstream>
+	<sstream>
+	<string>
+	<vector>
+
