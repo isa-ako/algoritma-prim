@@ -18,7 +18,7 @@ bool compareBobot(Edge a, Edge b){
     return a.bobot < b.bobot;
 }
 
-bool is_vertex_give_no_cycle(Edge ed, string vect){
+bool is_connected_to_edge(Edge ed, string vect){
     return
     ( ed.v1 == vect && ed.v2 != vect ) ||
     ( ed.v2 == vect && ed.v1 != vect );
@@ -115,21 +115,21 @@ int main()
 
         /// Loop untuk mencari edge
         for(int i=0; i<Graph.size(); i++){
-            int selected = 0;
-            int selected_idx = -1;
+            int connected = 0;
+            int connected_idx = -1;
 
-            /// Loop untuk mengecek vector yg sudah masuk dalam spanning tree
+            /// Loop untuk mengecek vertex yg sudah masuk dalam spanning tree
             for(int j=0; j<vertex_selected.size(); j++){
-                if( is_vertex_give_no_cycle(Graph[i], vertex_selected[j]) ){
-                    selected++;
-                    selected_idx = j;
+                if( is_connected_to_edge(Graph[i], vertex_selected[j]) ){
+                    connected++;
+                    connected_idx = j;
                 }
             }
             /// Jika vector memenuhi kriteria, pilih bobot yg lebih kecil
-            if( selected==1 && Graph[i].bobot<bobot ){
+            if( connected==1 && Graph[i].bobot<bobot ){
                 bobot = Graph[i].bobot;
                 insert_edge = Graph[i];
-                check_vertex_idx = selected_idx;
+                check_vertex_idx = connected_idx;
                 decide_to_insert = 1;
             }
         }
