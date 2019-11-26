@@ -1,3 +1,4 @@
+vektor,7
 A,B,7
 A,D,5
 D,B,9
